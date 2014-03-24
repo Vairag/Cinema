@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>  
+<head>
+<script type="text/javascript">
+
+    var MODULE = (function() {
+        var model = {}, view = {}, controller = {};
+
+        view.displayOnscreen = function (res,resVal) {
+            res.innerHTML = resVal;
+        };   
+
+        controller.btnclicked = function (btnkey) { 
+
+                    var result = document.getElementById('result');
+
+                    if(btnkey == 'C') {
+                        view.displayOnscreen(result,'');
+                    }
+                    else if(btnkey == '=') {
+                        var calString=result.innerHTML;
+                        var calEnd=calString.slice(-1);
+
+                        //  Before evaluating remove the end, if it is from +,-,*
+                        if(calEnd == '+' || calEnd == '-' || calEnd == '*')
+                        {     calString=calString.slice(0,-1); 
+                        }
+
+                        if(calString)
+                        {      
+                            // Result of calculation is stored as a answer property in Model.
+                            model.answer=eval(calString);
+                            view.displayOnscreen(result,model.answer);
+                        }
+
+                     }else if(btnkey == '+' || btnkey == '-' || btnkey == '*') {
+                                    // One from +,-,* is clicked
+                                    var calString=result.innerHTML;
+
+                                    // take string end.
+                                     var calEnd=calString.slice(-1);
+
+                                    // append operator if there is no operator at the last and string is not empty.
+                                    if(calString != '' && (calEnd != '+' || calEnd != '-' || calEnd != '*')) 
+                                    {    
+                                          view.displayOnscreen(result,result.innerHTML+btnkey);   
+                                    }
+
+                                    // Replace the end operator with new operator if clicked again.
+                                    if((calEnd == '+' || calEnd == '-' || calEnd == '*') && calString.length > 1){
+                                         view.displayOnscreen(result,calString.slice(0,-1)+btnkey);   
+                                    }
+
+                     }else{
+                       view.displayOnscreen(result,result.innerHTML+btnkey);   
+                     }
+                };
+        return controller;
+    })();
+</script>
+
+<style media="screen" type="text/css">
+            * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font: bold 17px sans-serif;
+            }
+
+            html {
+                    height: 100%;	
+            }
+
+            #Home24calculator {
+                    width: 325px;
+                    height: auto;
+                    padding: 20px 20px 9px;
+                    background: #9dd2ea;
+                    background: linear-gradient(#760BB2, #C5C7C3);
+                    border-radius: 30px;
+            }
+
+            /* Display section */
+            .display span.clear {
+                    float: left;
+            }
+
+            .display #result {
+                    height: 55px;
+                    width: 282px;
+                    float: right;
+                    padding: 0 10px;
+                    background: rgba(0, 0, 0, 0.2);
+                    font-size: 20px;
+                    line-height: 55px;
+                    color: white;
+                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+                    text-align: right;
+                    letter-spacing: 1px;
+                    margin-bottom: 20px;
+                    margin-top: 25px;
+            }
+
+            .buttons, .display {overflow: hidden;}
+
+
+            .buttons span{
+                    float: left;
+                    position: relative;
+                    top: 0;	
+                    cursor: pointer;
+                    width: 66px;
+                    height: 65px;
+                    background: white;
+                    border-radius: 40px;
+                    box-shadow: 0px 4px rgba(0, 0, 0, 0.2);
+                    margin: 0 7px 11px 0;
+                    color: #888;
+                    line-height: 65px;
+                    text-align: center;
+                    user-select: none;
+                    transition: all 0.2s ease;
+            }
+
+            .buttons span.sign {
+                    background: silver;
+                    margin-right: 0;
+            }
+
+            .buttons span.equals {
+                    background: #56D36A;
+
+                    color: #888e5f;
+            }
+            .buttons span.blank {
+                    background: linear-gradient(#9dd2ea, #8bceec);
+                    height: 0px;
+            }
+
+            .buttons span:hover {
+                    background: cadetblue;
+
+                    color: white;
+            }
+            span.clear{
+                background: #5F495D;
+            }
+
+            .buttons span:active {
+                    box-shadow: 0px 0px #6b54d3;
+                    top: 4px;
+            }
+
+            .buttons span.equals:active {
+                    box-shadow: 0px 0px #717a33;
+                    top: 4px;
+            }
+            .description{
+            	margin-top:30px;
+            	margin-left:10px;
+            }
+</style>
+
+</head>
+<body>
+	<div class="description"> HTML5 calculator page with button 0 to 9 that can perform following tasks: <br>-addition <br>-subtraction <br>-multiplication<br><br>By : Vairag Godhani<br><br /></div>
+    <div id="Home24calculator">
+
+            <div class="display">
+                    <div id="result"></div>	
+            </div>
+
+            <div class="buttons">
+                    <span onclick="MODULE.btnclicked(7);">7</span>
+                    <span onclick="MODULE.btnclicked(8);">8</span>
+                    <span onclick="MODULE.btnclicked(9);">9</span>
+                    <span class="sign"  onclick="MODULE.btnclicked('+');">+</span>
+                    <span onclick="MODULE.btnclicked(4);">4</span>
+                    <span onclick="MODULE.btnclicked(5);">5</span>
+                    <span onclick="MODULE.btnclicked(6);">6</span>
+                    <span class="sign" onclick="MODULE.btnclicked('-');">-</span>
+                    <span onclick="MODULE.btnclicked(1);">1</span>
+                    <span onclick="MODULE.btnclicked(2);">2</span>
+                    <span onclick="MODULE.btnclicked(3);">3</span>
+                    <span class="sign" onclick="MODULE.btnclicked('*');">*</span>
+                    <span class="clear" onclick="MODULE.btnclicked('C');">C</span>
+                    <span onclick="MODULE.btnclicked(0);">0</span>
+                    <span class="equals" onclick="MODULE.btnclicked('=');">=</span>
+                    <span class="blank"></span>
+            </div>
+    </div>
+</body>
+</html>
